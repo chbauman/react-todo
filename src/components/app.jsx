@@ -1,9 +1,12 @@
 import React, { Component } from "react";
 import Navbar from "./navbar";
 import Counters from "./counters";
+import Todos from "./todos";
 
 class App extends Component {
   state = {
+    todos: [{ id: 0, value: "First task" }],
+    todo_ref_count: 0,
     counters: [{ id: 0, value: 4 }],
     id_count: 0,
   };
@@ -16,12 +19,15 @@ class App extends Component {
     this.handleAdd = this.handleAdd.bind(this);
     this.handleIncrement = this.handleIncrement.bind(this);
 
+    this.addNewTodo = this.addNewTodo.bind(this);
+    this.deleteTodo = this.deleteTodo.bind(this);
+
     this.setCountersState = this.setNewState.bind(this);
   }
 
   handleDelete(counterID) {
     const counters = this.state.counters.filter((c) => c.id !== counterID);
-    this.setNewState(counters, null);
+    this.setNewState(counters, null, null);
   }
 
   handleIncrement(counter) {
@@ -29,14 +35,33 @@ class App extends Component {
     const idx = counters.indexOf(counter);
     counters[idx] = { ...counter };
     counters[idx].value++;
-    this.setNewState(counters, null);
+    this.setNewState(counters, null, null);
   }
 
-  setNewState(new_counters, new_id_count) {
+  setNewState(
+    new_counters,
+    new_id_count,
+    new_todos,
+    new_todo_rec_count = null
+  ) {
     if (new_id_count === null) {
       new_id_count = this.state.id_count;
     }
-    this.setState({ counters: new_counters, id_count: new_id_count });
+    if (new_todo_rec_count === null) {
+      new_todo_rec_count = this.state.todo_ref_count;
+    }
+    if (new_todos === null) {
+      new_todos = [...this.state.todos];
+    }
+    if (new_counters === null) {
+      new_counters = [...this.state.counters];
+    }
+    this.setState({
+      counters: new_counters,
+      id_count: new_id_count,
+      todos: new_todos,
+      todo_ref_count: new_todo_rec_count,
+    });
   }
 
   handleReset() {
@@ -44,7 +69,7 @@ class App extends Component {
       c.value = 0;
       return c;
     });
-    this.setNewState(cs, null);
+    this.setNewState(cs, null, null);
   }
 
   handleAdd() {
@@ -53,7 +78,20 @@ class App extends Component {
       ...this.state.counters,
       { id: new_ref_count, value: 3 },
     ];
-    this.setNewState(counters_new, new_ref_count);
+    this.setNewState(counters_new, new_ref_count, null);
+  }
+
+  addNewTodo() {
+    console.log("New task");
+    const new_id = this.state.todo_ref_count + 1;
+    const new_todo = { id: new_id, value: "Next task" };
+    const new_todos = [...this.state.todos, new_todo];
+    this.setNewState(null, null, new_todos, new_id);
+  }
+
+  deleteTodo(todoID) {
+    const rem_todos = this.state.todos.filter((c) => c.id !== todoID);
+    this.setNewState(null, null, rem_todos);
   }
 
   render() {
@@ -63,6 +101,11 @@ class App extends Component {
           counters={this.state.counters.filter((c) => c.value > 0).length}
         ></Navbar>
         <main className="Container">
+          <Todos
+            onAdd={this.addNewTodo}
+            onDelete={this.deleteTodo}
+            todos={this.state.todos}
+          ></Todos>
           <Counters
             onReset={this.handleReset}
             onAdd={this.handleAdd}
