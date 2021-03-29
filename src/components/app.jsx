@@ -103,7 +103,7 @@ class App extends Component {
         <Navbar
           counters={this.state.counters.filter((c) => c.value > 0).length}
         ></Navbar>
-        <main className="Container">
+        <main className="container">
           <Todos
             onAdd={this.addNewTodo}
             onDelete={this.deleteTodo}

@@ -6,33 +6,34 @@ class Todos extends Component {
     super(props);
     this.myRef = React.createRef();
   }
+  new_task_style = {
+    margin: "5px",
+  };
   render() {
     const { todos, onAdd, onDelete, onDone } = this.props;
     return (
       <div>
-        <div class="form-group row">
-          <label htmlFor="newTodo" className="col-sm-2 col-form-label">
+        <div className="input-group row" stype={this.new_task_style}>
+          <label
+            htmlFor="newTodo"
+            className="col-md-3 col-lg-3 col-sm-3 col-xs-3 col-form-label"
+          >
             New Task:
           </label>
-          <div>
-            <input
-              type="text"
-              className="form-control"
-              id="newTodo"
-              placeholder="Task XYZ"
-              ref={this.myRef}
-            ></input>
-          </div>
-          <div>
-            <button
-              onClick={() => onAdd(this.myRef)}
-              className="btn btn-primary btn-sm m-2"
-            >
-              Add
-            </button>
-          </div>
+          <input
+            type="text"
+            className="col-md-6 col-lg-6 col-sm-6 col-xs-6 form-control"
+            id="newTodo"
+            placeholder="Task XYZ"
+            ref={this.myRef}
+          ></input>
+          <button
+            onClick={() => onAdd(this.myRef)}
+            className="col-md-3 col-lg-3 col-sm-3 col-xs-3 btn btn-primary"
+          >
+            Add
+          </button>
         </div>
-        <br></br>
         {todos.map((c) => (
           <Todo
             key={c.id}

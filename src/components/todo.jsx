@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Button } from "react";
 
 class Todo extends Component {
   state = {
@@ -6,29 +6,38 @@ class Todo extends Component {
   };
   styles = {
     fontSize: "20px",
+    "border-style": "solid",
+    margin: "3px",
+    padding: "3px",
+    "border-radius": "5px",
   };
 
   render() {
     return (
       <React.Fragment>
-        <span style={this.styles}>{this.renderText()}</span>
-        <button
-          className="btn btn-secondary btn-sm m-2"
-          onClick={() => {
-            this.props.onDelete(this.props.todo_data.text);
-          }}
-        >
-          Done
-        </button>
-        <button
-          className="btn btn-danger btn-sm m-2"
-          onClick={() => {
-            this.props.onDelete(this.props.todo_data.id);
-          }}
-        >
-          Delete
-        </button>
-        <br></br>
+        <div className="row" style={this.styles}>
+          <span className="btn-group col-md-9 col-lg-9 col-sm-9 col-xs-9">
+            {this.renderText()}
+          </span>
+          <div className="btn-group col-md-3 col-lg-3 col-sm-3 col-xs-3">
+            <button
+              className="btn-sm btn-secondary"
+              onClick={() => {
+                this.props.onDelete(this.props.todo_data.text);
+              }}
+            >
+              Done<span className="glyphicon glyphicon-ok"></span>
+            </button>
+            <button
+              className="btn-sm btn-danger"
+              onClick={() => {
+                this.props.onDelete(this.props.todo_data.id);
+              }}
+            >
+              Delete
+            </button>
+          </div>
+        </div>
       </React.Fragment>
     );
   }
