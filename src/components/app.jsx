@@ -13,7 +13,6 @@ class App extends Component {
 
   constructor(props) {
     super(props);
-    console.log("constructor");
     this.handleDelete = this.handleDelete.bind(this);
     this.handleReset = this.handleReset.bind(this);
     this.handleAdd = this.handleAdd.bind(this);
@@ -81,11 +80,15 @@ class App extends Component {
     this.setNewState(counters_new, new_ref_count, null);
   }
 
-  addNewTodo() {
-    console.log("New task");
+  addNewTodo(ref) {
+    const txt = ref.current.value;
+    if (!txt || txt === "") {
+      return;
+    }
     const new_id = this.state.todo_ref_count + 1;
-    const new_todo = { id: new_id, value: "Next task" };
-    const new_todos = [...this.state.todos, new_todo];
+    const new_todo = { id: new_id, value: txt };
+    const new_todos = [new_todo, ...this.state.todos];
+    ref.current.value = "";
     this.setNewState(null, null, new_todos, new_id);
   }
 

@@ -11,7 +11,6 @@ class Counter extends Component {
   };
 
   render() {
-    console.log("props", this.props);
     return (
       <React.Fragment>
         <span style={this.styles} className={this.getBadgeClasses()}>

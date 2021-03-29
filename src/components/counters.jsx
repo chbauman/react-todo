@@ -11,13 +11,13 @@ class Counters extends Component {
         </button>
 
         <div class="form-group row">
-          <label for="staticEmail" class="col-sm-2 col-form-label">
+          <label htmlFor="staticEmail" className="col-sm-2 col-form-label">
             New Task:
           </label>
           <div>
             <input
               type="text"
-              class="form-control"
+              className="form-control"
               id="staticEmail"
               placeholder="Task XYZ"
             ></input>

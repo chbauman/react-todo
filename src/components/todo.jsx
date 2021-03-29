@@ -9,7 +9,6 @@ class Todo extends Component {
   };
 
   render() {
-    console.log("todo_props", this.props);
     return (
       <React.Fragment>
         <span style={this.styles}>{this.renderText()}</span>
