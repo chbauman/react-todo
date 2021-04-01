@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Navbar from "./navbar";
 import Counters from "./counters";
-import Todos from "./todos";
+import Todos from "./todo/todos";
 
 class App extends Component {
   state = {
