@@ -15,7 +15,7 @@ class Todo extends Component {
   render() {
     return (
       <React.Fragment>
-        <div className="row" style={this.styles}>
+        <div className="row" style={this.styles} data-testid="todo">
           <span className="btn-group col-md-9 col-lg-9 col-sm-9 col-xs-9">
             {this.renderText()}
           </span>
