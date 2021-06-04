@@ -2,6 +2,7 @@ import { useRef } from "react";
 import { Button, Col, Row } from "react-bootstrap";
 import CompHeader from "./CompHeader";
 import { Todo } from "./Todo";
+import { v4 as uuidv4 } from "uuid";
 
 export default function NewTodo(props: {
   addNewCallbackRef: { current: (t: Todo) => void };
@@ -24,7 +25,7 @@ export default function NewTodo(props: {
             onClick={() =>
               props.addNewCallbackRef.current({
                 text: (inputRef.current as any).value,
-                id: 4,
+                id: uuidv4(),
                 done: null,
               })
             }

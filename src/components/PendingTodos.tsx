@@ -26,7 +26,7 @@ export default function PendingTodos(props: {
       {currTodos.map((el) => {
         console.assert(el.done === null, "found a bug!");
         return (
-          <Row key={el.text}>
+          <Row key={el.id}>
             <TodoComponent todo={el}></TodoComponent>
           </Row>
         );

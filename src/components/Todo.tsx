@@ -1,12 +1,19 @@
-import { Fragment } from "react";
-import { Alert, Button, ButtonGroup } from "react-bootstrap";
+import { Button, ButtonGroup } from "react-bootstrap";
 
-const noSpaceStyle = { margin: 0, padding: 0 };
+export const noSpaceStyle = { margin: 0, padding: 0 };
 
 export type Todo = {
-  id: number;
+  id: string;
   text: string;
   done: Date | null;
+};
+
+const styles = {
+  fontSize: "20px",
+  borderStyle: "solid",
+  margin: "3px",
+  padding: "3px",
+  borderRadius: "5px",
 };
 
 export default function TodoComponent(props: { todo: Todo }) {
@@ -18,11 +25,9 @@ export default function TodoComponent(props: { todo: Todo }) {
     </ButtonGroup>
   );
   return (
-    <Fragment>
-      <Alert variant="info" style={noSpaceStyle}>
-        {props.todo.text}
-        {buttGroup}
-      </Alert>
-    </Fragment>
+    <div className="w-100 d-flex justify-content-between" style={styles}>
+      {props.todo.text}
+      {buttGroup}
+    </div>
   );
 }

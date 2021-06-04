@@ -3,9 +3,9 @@ import { Container } from "react-bootstrap";
 import "./App.css";
 import NewTodo from "./components/NewTodo";
 import PendingTodos from "./components/PendingTodos";
-import TodoComponent, { Todo } from "./components/Todo";
+import { Todo } from "./components/Todo";
 
-const initTodos: Todo[] = [{ id: 0, text: "First todo", done: null }];
+const initTodos: Todo[] = [{ id: "first", text: "First todo", done: null }];
 
 function App() {
   const addNewCBRef = useRef();
