@@ -1,12 +1,7 @@
 import { Button, ButtonGroup } from "react-bootstrap";
+import { globalTodoHandler, Todo, TodoGroup } from "./TodoGroup";
 
 export const noSpaceStyle = { margin: 0, padding: 0 };
-
-export type Todo = {
-  id: string;
-  text: string;
-  done: Date | null;
-};
 
 const styles = {
   fontSize: "20px",
@@ -16,17 +11,32 @@ const styles = {
   borderRadius: "5px",
 };
 
-export default function TodoComponent(props: { todo: Todo }) {
+export default function TodoComponent(props: {
+  todo: Todo;
+  groups: TodoGroup[];
+}) {
+  // Handle text
+  const text = props.todo.text;
+  const groupString = props.groups.map((el) => el.name).join(" > ");
+  const textEl = `${groupString} > ${text}`;
+
+  // Define buttons
   const doneButt = props.todo.done ? null : <Button>Done</Button>;
   const buttGroup = (
     <ButtonGroup>
       {doneButt}
-      <Button variant="danger">Delete</Button>
+      <Button
+        variant="danger"
+        onClick={() => globalTodoHandler.deleteTodo(props.todo.id)}
+      >
+        Delete
+      </Button>
     </ButtonGroup>
   );
+
   return (
     <div className="w-100 d-flex justify-content-between" style={styles}>
-      {props.todo.text}
+      {textEl}
       {buttGroup}
     </div>
   );

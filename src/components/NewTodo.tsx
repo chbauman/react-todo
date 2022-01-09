@@ -1,12 +1,9 @@
 import { useRef } from "react";
 import { Button, Col, Row } from "react-bootstrap";
 import CompHeader from "./CompHeader";
-import { Todo } from "./Todo";
-import { v4 as uuidv4 } from "uuid";
+import { globalTodoHandler } from "./TodoGroup";
 
-export default function NewTodo(props: {
-  addNewCallbackRef: { current: (t: Todo) => void };
-}) {
+export default function NewTodo() {
   const inputRef = useRef(null);
 
   return (
@@ -22,13 +19,14 @@ export default function NewTodo(props: {
             ref={inputRef}
           ></input>
           <Button
-            onClick={() =>
-              props.addNewCallbackRef.current({
-                text: (inputRef.current as any).value,
-                id: uuidv4(),
-                done: null,
-              })
-            }
+            onClick={() => {
+              const inputEl = inputRef.current as unknown as HTMLInputElement;
+              const txt = inputEl.value;
+              if (txt !== "") {
+                globalTodoHandler.addTodo(inputEl.value);
+                inputEl.value = "";
+              }
+            }}
           >
             Add
           </Button>
