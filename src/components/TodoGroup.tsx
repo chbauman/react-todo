@@ -63,6 +63,11 @@ export class TodoHandler {
     });
   }
 
+  getAllGroups() {
+    const todos = Object.keys(this.todoTree).map((key) => this.todoTree[key]);
+    return todos.filter(isGroup);
+  }
+
   generateNewId() {
     return uuidv4();
   }
