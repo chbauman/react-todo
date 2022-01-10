@@ -1,5 +1,10 @@
-import { Button, ButtonGroup } from "react-bootstrap";
-import { globalTodoHandler, Todo, TodoGroup } from "./TodoGroup";
+import { Breadcrumb, Button, ButtonGroup } from "react-bootstrap";
+import {
+  globalTodoHandler,
+  Todo,
+  TodoGroup,
+  TodoGroupAndGroups,
+} from "./TodoGroup";
 
 export const noSpaceStyle = { margin: 0, padding: 0 };
 
@@ -14,11 +19,29 @@ const styles = {
 export default function TodoComponent(props: {
   todo: Todo;
   groups: TodoGroup[];
+  setGroup: (grp: TodoGroupAndGroups) => void;
 }) {
   // Handle text
   const text = props.todo.text;
-  const groupString = props.groups.map((el) => el.name).join(" > ");
-  const textEl = `${groupString} > ${text}`;
+
+  // Define breadcrumbs to choose group
+  const groupCrumbs = (
+    <Breadcrumb>
+      {props.groups.map((el, idx) => {
+        const onClick = () => {
+          const subGroups = props.groups.slice(0, idx);
+          console.log(subGroups);
+          props.setGroup({ todo: el, groupList: subGroups });
+        };
+        return (
+          <Breadcrumb.Item key={el.id} onClick={onClick}>
+            {el.name}
+          </Breadcrumb.Item>
+        );
+      })}
+      <Breadcrumb.Item active>{text}</Breadcrumb.Item>
+    </Breadcrumb>
+  );
 
   // Define buttons
   const onDone = () => {
@@ -41,7 +64,7 @@ export default function TodoComponent(props: {
 
   return (
     <div className="w-100 d-flex justify-content-between" style={styles}>
-      {textEl}
+      {groupCrumbs}
       {buttGroup}
     </div>
   );

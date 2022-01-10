@@ -2,7 +2,11 @@ import { useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import CompHeader from "./CompHeader";
 import TodoComponent from "./Todo";
-import { globalTodoHandler, TodoAndGroups } from "./TodoGroup";
+import {
+  globalTodoHandler,
+  TodoAndGroups,
+  TodoGroupAndGroups,
+} from "./TodoGroup";
 
 const compareDates = (a: Date | null, b: Date | null) => {
   // Compare two dates (could be of any type supported by the convert
@@ -21,7 +25,9 @@ const compareDates = (a: Date | null, b: Date | null) => {
   return isFinite(aNum) && isFinite(bNum) ? aLarger - bLarger : NaN;
 };
 
-export default function PendingTodos() {
+export default function PendingTodos(props: {
+  setGroup: (grp: TodoGroupAndGroups) => void;
+}) {
   // Hack for enforcing re-render when todos change
   const [dummy, setDummy] = useState<number>(0);
   const reRender = () => setDummy(dummy + 1);
@@ -39,7 +45,11 @@ export default function PendingTodos() {
     const todo = el.todo;
     return (
       <Row key={todo.id}>
-        <TodoComponent todo={todo} groups={el.groupList}></TodoComponent>
+        <TodoComponent
+          todo={todo}
+          groups={el.groupList}
+          setGroup={props.setGroup}
+        ></TodoComponent>
       </Row>
     );
   };

@@ -30,6 +30,7 @@ const isGroup = (gt: GeneralTodo): gt is TodoGroup => {
 
 export type TodoTree = { [key: string]: GeneralTodo };
 
+export type TodoGroupAndGroups = { todo: TodoGroup; groupList: TodoGroup[] };
 export type TodoAndGroups = { todo: Todo; groupList: TodoGroup[] };
 type TodoListifiedTree = {
   [key: string]: TodoAndGroups;
