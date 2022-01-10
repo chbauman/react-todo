@@ -6,12 +6,14 @@ interface TodoBase {
   id: string;
   parentId: string | null;
   type: TodoType;
+  createdAt: Date | null;
 }
 
 export interface Todo extends TodoBase {
   type: "todo";
   text: string;
   done: Date | null;
+  createdAt: Date;
 }
 
 export interface TodoGroup extends TodoBase {
@@ -28,8 +30,9 @@ const isGroup = (gt: GeneralTodo): gt is TodoGroup => {
 
 export type TodoTree = { [key: string]: GeneralTodo };
 
+export type TodoAndGroups = { todo: Todo; groupList: TodoGroup[] };
 type TodoListifiedTree = {
-  [key: string]: { todo: Todo; groupList: TodoGroup[] };
+  [key: string]: TodoAndGroups;
 };
 
 export class TodoHandler {
@@ -47,6 +50,7 @@ export class TodoHandler {
       parentId: null,
       id: rootId,
       childrenIds: [],
+      createdAt: null,
     };
     this.todoTree = {};
     this.todoTree[rootId] = rootGroup;
@@ -66,6 +70,15 @@ export class TodoHandler {
   getAllGroups() {
     const todos = Object.keys(this.todoTree).map((key) => this.todoTree[key]);
     return todos.filter(isGroup);
+  }
+
+  setToDone(id: string) {
+    const todo = this.todoTree[id];
+    if (isGroup(todo)) {
+      throw new Error("This is a bug, cannot set a group to DONE");
+    }
+    todo.done = new Date();
+    this.changeHappened();
   }
 
   generateNewId() {
@@ -102,6 +115,7 @@ export class TodoHandler {
     const newTodo = {
       id: this.generateNewId(),
       parentId: parent.id,
+      createdAt: new Date(),
     };
     parent.childrenIds.push(newTodo.id);
     return newTodo;

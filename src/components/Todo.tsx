@@ -21,7 +21,12 @@ export default function TodoComponent(props: {
   const textEl = `${groupString} > ${text}`;
 
   // Define buttons
-  const doneButt = props.todo.done ? null : <Button>Done</Button>;
+  const onDone = () => {
+    globalTodoHandler.setToDone(props.todo.id);
+  };
+  const doneButt = props.todo.done ? null : (
+    <Button onClick={onDone}>Done</Button>
+  );
   const buttGroup = (
     <ButtonGroup>
       {doneButt}

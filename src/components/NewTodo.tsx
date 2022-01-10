@@ -12,33 +12,35 @@ export default function NewTodo() {
   };
 
   return (
-    <Col>
-      <CompHeader text={"New task:"}></CompHeader>
-      <Row>
-        <div className="input-group row">
-          <input
-            type="text"
-            className="col-xs-6 form-control"
-            id="newTodo"
-            placeholder="Task XYZ"
-            ref={inputRef}
-          ></input>
-          <GroupSelect onChangeCB={onGroupChange} />
-          <Button
-            onClick={() => {
-              const inputEl = inputRef.current as unknown as HTMLInputElement;
-              const txt = inputEl.value;
-              if (txt !== "") {
-                globalTodoHandler.addTodo(inputEl.value, groupRef.current);
-                inputEl.value = "";
-              }
-            }}
-          >
-            Add
-          </Button>
-        </div>
-      </Row>
-    </Col>
+    <Row>
+      <Col>
+        <CompHeader text={"New task:"}></CompHeader>
+        <Row>
+          <div className="input-group row">
+            <input
+              type="text"
+              className="col-xs-6 form-control"
+              id="newTodo"
+              placeholder="Task XYZ"
+              ref={inputRef}
+            ></input>
+            <GroupSelect onChangeCB={onGroupChange} />
+            <Button
+              onClick={() => {
+                const inputEl = inputRef.current as unknown as HTMLInputElement;
+                const txt = inputEl.value;
+                if (txt !== "") {
+                  globalTodoHandler.addTodo(inputEl.value, groupRef.current);
+                  inputEl.value = "";
+                }
+              }}
+            >
+              Add
+            </Button>
+          </div>
+        </Row>
+      </Col>
+    </Row>
   );
 }
 
