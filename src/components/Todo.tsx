@@ -18,20 +18,25 @@ const styles = {
 
 export default function TodoComponent(props: {
   todo: Todo;
-  groups: TodoGroup[];
+  currParentGroups: TodoGroup[];
   setGroup: (grp: TodoGroupAndGroups) => void;
+  currentGroup: TodoGroupAndGroups;
 }) {
   // Handle text
   const text = props.todo.text;
+  const groupsNotShown = props.currentGroup.groupList;
 
   // Define breadcrumbs to choose group
   const groupCrumbs = (
     <Breadcrumb>
-      {props.groups.map((el, idx) => {
+      {props.currParentGroups.map((el, idx) => {
         const onClick = () => {
-          const subGroups = props.groups.slice(0, idx);
+          const subGroups = props.currParentGroups.slice(0, idx);
           console.log(subGroups);
-          props.setGroup({ todo: el, groupList: subGroups });
+          props.setGroup({
+            todo: el,
+            groupList: groupsNotShown.concat(subGroups),
+          });
         };
         return (
           <Breadcrumb.Item key={el.id} onClick={onClick}>

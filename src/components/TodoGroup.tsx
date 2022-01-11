@@ -39,6 +39,7 @@ type TodoListifiedTree = {
 export class TodoHandler {
   todoTree: TodoTree;
   root: TodoGroup;
+  subTreeRoot: TodoGroupAndGroups;
 
   onChangedCbDict: { [key: string]: VoidFunction } = {};
 
@@ -56,6 +57,11 @@ export class TodoHandler {
     this.todoTree = {};
     this.todoTree[rootId] = rootGroup;
     this.root = rootGroup;
+    this.subTreeRoot = { groupList: [], todo: rootGroup };
+  }
+
+  setGroupAsSelected(newGroup: TodoGroupAndGroups) {
+    this.subTreeRoot = newGroup;
   }
 
   registerOnChanged(key: string, cb: VoidFunction) {
@@ -88,7 +94,7 @@ export class TodoHandler {
 
   addGroup(name: string, parentGroupId: string | null = null) {
     const newGroup: TodoGroup = {
-      ...this.getNewBase(parentGroupId),
+      ...this.getNewBaseObject(parentGroupId),
       name: name,
       type: "group",
       childrenIds: [],
@@ -100,7 +106,7 @@ export class TodoHandler {
 
   addTodo(text: string, parentGroupId: string | null = null) {
     const newTodo: Todo = {
-      ...this.getNewBase(parentGroupId),
+      ...this.getNewBaseObject(parentGroupId),
       text: text,
       done: null,
       type: "todo",
@@ -111,7 +117,7 @@ export class TodoHandler {
     return newTodo.id;
   }
 
-  private getNewBase(parentGroupId: string | null) {
+  private getNewBaseObject(parentGroupId: string | null) {
     const parent = this.getParent(parentGroupId);
     const newTodo = {
       id: this.generateNewId(),
@@ -153,7 +159,8 @@ export class TodoHandler {
   getTodoList() {
     const extTree: TodoListifiedTree = {};
     const currGroupList: TodoGroup[] = [];
-    this.getTodoListHelper(extTree, currGroupList, this.root);
+
+    this.getTodoListHelper(extTree, currGroupList, this.subTreeRoot.todo);
     return extTree;
   }
 
@@ -177,8 +184,12 @@ export class TodoHandler {
 export const globalTodoHandler = new TodoHandler();
 
 // Add some test data
-globalTodoHandler.addTodo("test");
-globalTodoHandler.addTodo("test2");
-const textGroupId = globalTodoHandler.addGroup("testGroup");
-globalTodoHandler.addTodo("test group", textGroupId);
-globalTodoHandler.addTodo("test2 group", textGroupId);
+globalTodoHandler.addTodo("Todo on base level.");
+globalTodoHandler.addTodo("Another test todo.");
+let testGroupId = globalTodoHandler.addGroup("Test Group");
+globalTodoHandler.addTodo("Sample todo in group.", testGroupId);
+globalTodoHandler.addTodo("Another todo.", testGroupId);
+
+testGroupId = globalTodoHandler.addGroup("Test Group 2", testGroupId);
+globalTodoHandler.addTodo("A todo from the second group.", testGroupId);
+globalTodoHandler.addTodo("Another deeply nested todo.", testGroupId);

@@ -1,5 +1,5 @@
-import { useState } from "react";
 import { Col, Row } from "react-bootstrap";
+import { useRegisteredRerender } from "../hooks/registerRerender";
 import CompHeader from "./CompHeader";
 import TodoComponent from "./Todo";
 import {
@@ -27,11 +27,9 @@ const compareDates = (a: Date | null, b: Date | null) => {
 
 export default function PendingTodos(props: {
   setGroup: (grp: TodoGroupAndGroups) => void;
+  currentGroup: TodoGroupAndGroups;
 }) {
-  // Hack for enforcing re-render when todos change
-  const [dummy, setDummy] = useState<number>(0);
-  const reRender = () => setDummy(dummy + 1);
-  globalTodoHandler.registerOnChanged("pending", reRender);
+  useRegisteredRerender("pending");
 
   const todoDict = globalTodoHandler.getTodoList();
   const todoList = Object.keys(todoDict).map((key) => todoDict[key]);
@@ -47,8 +45,9 @@ export default function PendingTodos(props: {
       <Row key={todo.id}>
         <TodoComponent
           todo={todo}
-          groups={el.groupList}
+          currParentGroups={el.groupList}
           setGroup={props.setGroup}
+          currentGroup={props.currentGroup}
         ></TodoComponent>
       </Row>
     );

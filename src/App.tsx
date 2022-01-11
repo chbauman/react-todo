@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Container, Nav, Navbar } from "react-bootstrap";
 import "./App.css";
-import NewTodo from "./components/NewTodo";
+import { NewGroup, NewTodo } from "./components/NewTodo";
 import PendingTodos from "./components/PendingTodos";
 import { globalTodoHandler, TodoGroupAndGroups } from "./components/TodoGroup";
 
@@ -13,12 +13,20 @@ const App = () => {
     todo: initGroup,
     groupList: [],
   });
+  const wrappedSetGroup = (group: TodoGroupAndGroups) => {
+    setGroup(group);
+    globalTodoHandler.setGroupAsSelected(group);
+  };
 
   return (
     <Container>
-      {getNav(group, setGroup)}
+      {getNav(group, wrappedSetGroup)}
       <NewTodo></NewTodo>
-      <PendingTodos setGroup={setGroup}></PendingTodos>
+      <NewGroup></NewGroup>
+      <PendingTodos
+        setGroup={wrappedSetGroup}
+        currentGroup={group}
+      ></PendingTodos>
     </Container>
   );
 };
@@ -27,7 +35,7 @@ const getNav = (group: TodoGroupAndGroups, setGroup: any) => {
   const currName = group.todo.name;
   const groupList = group.groupList;
   return (
-    <Navbar bg="light" expand="lg">
+    <Navbar bg="light" expand="lg" className="mb-2">
       <Navbar.Brand href="/">{currName}</Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
