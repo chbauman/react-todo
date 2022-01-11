@@ -45,19 +45,14 @@ const useNewTodoComp = (
 
   return (
     <>
-      <Row>
+      <Row className="mt-2">
         <Col>
           <CompHeader text={title}></CompHeader>
         </Col>
       </Row>
       <Row>
         <Form.Group as={Col} md={8} controlId={"text-" + id}>
-          <Form.Control
-            type="text"
-            placeholder="Task XYZ"
-            ref={inputRef}
-            id={id}
-          />
+          <Form.Control type="text" placeholder="Task XYZ" ref={inputRef} />
         </Form.Group>
         <Form.Group as={Col} md={3} controlId={"group-select-" + id}>
           <GroupSelect onChangeCB={onGroupChange} />

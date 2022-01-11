@@ -1,7 +1,7 @@
 import { Col, Row } from "react-bootstrap";
 import { useRegisteredRerender } from "../hooks/registerRerender";
 import CompHeader from "./CompHeader";
-import TodoComponent from "./Todo";
+import { TodoComponent } from "./Todo";
 import {
   globalTodoHandler,
   TodoAndGroups,
@@ -42,19 +42,18 @@ export default function PendingTodos(props: {
   const todoMapper = (el: TodoAndGroups) => {
     const todo = el.todo;
     return (
-      <Row key={todo.id}>
-        <TodoComponent
-          todo={todo}
-          currParentGroups={el.groupList}
-          setGroup={props.setGroup}
-          currentGroup={props.currentGroup}
-        ></TodoComponent>
-      </Row>
+      <TodoComponent
+        key={todo.id}
+        todo={todo}
+        currParentGroups={el.groupList}
+        setGroup={props.setGroup}
+        currentGroup={props.currentGroup}
+      ></TodoComponent>
     );
   };
 
   return (
-    <Row>
+    <Row className="mt-2">
       <Col md={8}>
         <CompHeader text={"Open tasks:"}></CompHeader>
         {openTodos.map(todoMapper)}

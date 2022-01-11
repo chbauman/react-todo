@@ -34,8 +34,9 @@ const App = () => {
 const getNav = (group: TodoGroupAndGroups, setGroup: any) => {
   const currName = group.todo.name;
   const groupList = group.groupList;
+
   return (
-    <Navbar bg="light" expand="lg" className="mb-2">
+    <Navbar bg="light" expand="md">
       <Navbar.Brand href="/">{currName}</Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
@@ -47,7 +48,7 @@ const getNav = (group: TodoGroupAndGroups, setGroup: any) => {
             };
             return (
               <Nav.Link
-                key={el.id}
+                key={`nav-${el.id}`}
                 onClick={onClick}
               >{`${el.name} /`}</Nav.Link>
             );

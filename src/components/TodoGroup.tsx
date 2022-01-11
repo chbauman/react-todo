@@ -193,3 +193,7 @@ globalTodoHandler.addTodo("Another todo.", testGroupId);
 testGroupId = globalTodoHandler.addGroup("Test Group 2", testGroupId);
 globalTodoHandler.addTodo("A todo from the second group.", testGroupId);
 globalTodoHandler.addTodo("Another deeply nested todo.", testGroupId);
+globalTodoHandler.addTodo(
+  "Another deeply nested todo. This one contains a lot of text such that it needs to be wrapped!",
+  testGroupId
+);
