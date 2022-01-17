@@ -1,7 +1,7 @@
 import { AccountDetailes, Credentials } from "../util/types";
 import { BackendInterface } from "./baseInterface";
 
-const DEBUG = true;
+const DEBUG = false;
 const baseUrl = DEBUG
   ? "http://127.0.0.1:8000/"
   : "https://chbauman.pythonanywhere.com/";
