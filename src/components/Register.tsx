@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button, Form, Container } from "react-bootstrap";
 import { djangoInterface } from "../backendInterface/djangoInterface";
-import { AccountDetailes } from "../util/types";
+import { AccountDetails } from "../util/types";
 
 export const RegisterPage = ({
   setCreatingAccount,
@@ -10,7 +10,7 @@ export const RegisterPage = ({
   setCreatingAccount: (b: boolean) => void;
   setLoggedIn: (s: string | null) => void;
 }) => {
-  const [accDet, setAccDet] = useState<AccountDetailes>({
+  const [accDet, setAccDet] = useState<AccountDetails>({
     password: "",
     username: "",
     email: "",

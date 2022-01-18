@@ -3,7 +3,7 @@ export interface Credentials {
   username: string;
 }
 
-export interface AccountDetailes extends Credentials {
+export interface AccountDetails extends Credentials {
   lastname?: string;
   email: string;
 }

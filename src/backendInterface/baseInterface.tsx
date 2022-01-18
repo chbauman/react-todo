@@ -1,4 +1,4 @@
-import { AccountDetailes, Credentials } from "../util/types";
+import { AccountDetails, Credentials } from "../util/types";
 
 export abstract class BackendInterface {
   abstract loginUser(credentials: Credentials): Promise<boolean>;
@@ -12,6 +12,6 @@ export abstract class BackendInterface {
    * Returns null if creation was not successful.
    */
   abstract createAccountAndLogin(
-    accoundData: AccountDetailes
+    accoundData: AccountDetails
   ): Promise<string | null>;
 }

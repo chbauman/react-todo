@@ -1,4 +1,4 @@
-import { AccountDetailes, Credentials } from "../util/types";
+import { AccountDetails, Credentials } from "../util/types";
 import { BackendInterface } from "./baseInterface";
 
 const DEBUG = true;
@@ -15,6 +15,9 @@ class DjangoInterface extends BackendInterface {
     token: string;
     userName: string;
   } | null = null;
+
+  loadedTodos: null | any[] = null;
+  loadedGroups: null | any[] = null;
 
   constructor() {
     super();
@@ -59,6 +62,8 @@ class DjangoInterface extends BackendInterface {
     const todoGroupsUrl = `${baseUrl}todo_groups/`;
     const todoGroups = await this.get(todoGroupsUrl);
     const todoGroupsJson = await todoGroups.json();
+    this.loadedTodos = todoJson;
+    this.loadedGroups = todoGroupsJson;
     console.log(todoJson, todoGroupsJson);
   }
 
@@ -76,7 +81,7 @@ class DjangoInterface extends BackendInterface {
     });
   }
 
-  async createAccountAndLogin(accoundData: AccountDetailes) {
+  async createAccountAndLogin(accoundData: AccountDetails) {
     const url = `${baseUrl}create_user/`;
     const data = await this.getPostData(url, accoundData);
     if (!data.ok) {
