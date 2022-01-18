@@ -24,7 +24,10 @@ const FullApp = () => {
   }
 
   if (isLoggedIn !== null) {
-    const logout = () => setLoggedIn(null);
+    const logout = () => {
+      djangoInterface.logout();
+      setLoggedIn(null);
+    };
     return <App userName={isLoggedIn} logout={logout}></App>;
   }
   const login = async (credentials: Credentials) => {
