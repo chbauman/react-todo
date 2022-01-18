@@ -53,7 +53,27 @@ class DjangoInterface extends BackendInterface {
   }
 
   async loadUserData() {
-    console.log("Not implementeed");
+    const todosUrl = `${baseUrl}todo_items/`;
+    const todos = await this.get(todosUrl);
+    const todoJson = await todos.json();
+    const todoGroupsUrl = `${baseUrl}todo_groups/`;
+    const todoGroups = await this.get(todoGroupsUrl);
+    const todoGroupsJson = await todoGroups.json();
+    console.log(todoJson, todoGroupsJson);
+  }
+
+  private async get(url: string) {
+    if (this.userData === null) {
+      throw new Error("Not logged in!");
+    }
+    const authorizedHeader = {
+      ...contTypeHeader,
+      Authorization: `Token ${this.userData?.token}`,
+    };
+    return fetch(url, {
+      method: "GET",
+      headers: authorizedHeader,
+    });
   }
 
   async createAccountAndLogin(accoundData: AccountDetailes) {
