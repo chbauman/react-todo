@@ -2,9 +2,12 @@ import { AccountDetails, Credentials } from "../util/types";
 import { BackendInterface } from "./baseInterface";
 
 const DEBUG = true;
+
+/** Backend url. */
 const baseUrl = DEBUG
   ? "http://127.0.0.1:8000/"
   : "https://chbauman.pythonanywhere.com/";
+
 const contTypeHeader = {
   "Content-Type": "application/json",
 };
@@ -15,9 +18,6 @@ class DjangoInterface extends BackendInterface {
     token: string;
     userName: string;
   } | null = null;
-
-  loadedTodos: null | any[] = null;
-  loadedGroups: null | any[] = null;
 
   constructor() {
     super();
@@ -32,6 +32,7 @@ class DjangoInterface extends BackendInterface {
     });
   }
 
+  /** Login a user with the given credentials. */
   async loginUser(credentials: Credentials) {
     const url = `${baseUrl}api-token-auth/`;
     const data = await this.getPostData(url, credentials);

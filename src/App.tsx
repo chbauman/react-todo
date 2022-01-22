@@ -9,11 +9,13 @@ import { RegisterPage } from "./components/Register";
 import { globalTodoHandler, TodoGroupAndGroups } from "./components/TodoGroup";
 import { Credentials } from "./util/types";
 
+/** The main app. */
 const FullApp = () => {
   const initUser = djangoInterface.getUser();
   const [isLoggedIn, setLoggedIn] = useState<string | null>(initUser);
   const [creatingAccount, setCreatingAccount] = useState<boolean>(false);
 
+  // Return create account component
   if (creatingAccount) {
     return (
       <RegisterPage
@@ -23,6 +25,7 @@ const FullApp = () => {
     );
   }
 
+  // Return app component if user is logged in
   if (isLoggedIn !== null) {
     const logout = () => {
       djangoInterface.logout();
@@ -30,6 +33,8 @@ const FullApp = () => {
     };
     return <App userName={isLoggedIn} logout={logout}></App>;
   }
+
+  // Return login component
   const login = async (credentials: Credentials) => {
     const loginSuccessful = await djangoInterface.loginUser(credentials);
     if (loginSuccessful) {
@@ -73,6 +78,7 @@ const App = ({
   );
 };
 
+/** Defines the navigation bar. */
 const getNav = (
   group: TodoGroupAndGroups,
   setGroup: any,

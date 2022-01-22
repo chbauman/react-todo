@@ -3,6 +3,7 @@ import { Button, Form, Container } from "react-bootstrap";
 import { djangoInterface } from "../backendInterface/djangoInterface";
 import { AccountDetails } from "../util/types";
 
+/** Register new user page. */
 export const RegisterPage = ({
   setCreatingAccount,
   setLoggedIn,
