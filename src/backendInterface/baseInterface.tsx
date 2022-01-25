@@ -7,6 +7,10 @@ import {
 } from "../components/TodoGroup";
 import { AccountDetails, Credentials } from "../util/types";
 
+/** Todo item as stored on backend.
+ *
+ * The id is a number and not used on the frontend.
+ */
 export type BackendTodo = {
   created: Date;
   text: string;
@@ -14,10 +18,15 @@ export type BackendTodo = {
   done: null | Date;
   parent_group_name: string;
 };
+
+/** TodoGroup as stored on backend.
+ *
+ * The backend uses the name of the group as id!
+ */
 export type BackendTodoGroup = {
   created: Date;
   name: string;
-  parent_id: string;
+  parent_id: string | null;
 };
 
 export abstract class BackendInterface {
@@ -37,6 +46,7 @@ export abstract class BackendInterface {
   /** Loads the data and populates the fields loadedTodos and loadedGroups. */
   abstract loadUserData(): Promise<void>;
 
+  /** Converts the backend structures. */
   convertAndInit() {
     if (this.loadedTodos === null || this.loadedGroups === null) {
       console.log("Fuck");
@@ -90,6 +100,11 @@ export abstract class BackendInterface {
 
     const root = groupMap["root"];
     globalTodoHandler.init(retTree, root);
+  }
+
+  /** Converts to backend objects. */
+  prepareSaving() {
+    console.log("Not implemented!");
   }
 
   /** Creates a user account.

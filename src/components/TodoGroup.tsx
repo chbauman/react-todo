@@ -2,6 +2,10 @@ import { v4 as uuidv4 } from "uuid";
 
 type TodoType = "todo" | "group";
 
+/** Base todo interface.
+ *
+ * The id is a UUID that is generated when the object is created.
+ */
 interface TodoBase {
   id: string;
   parentId: string | null;
