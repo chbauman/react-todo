@@ -65,7 +65,7 @@ class DjangoInterface extends BackendInterface {
     const todoGroupsJson = await todoGroups.json();
     this.loadedTodos = todoJson;
     this.loadedGroups = todoGroupsJson;
-    console.log(todoJson, todoGroupsJson);
+    this.convertAndInit();
   }
 
   private async get(url: string) {

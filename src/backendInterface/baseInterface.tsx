@@ -1,14 +1,21 @@
+import {
+  getNewId,
+  globalTodoHandler,
+  Todo,
+  TodoGroup,
+  TodoTree,
+} from "../components/TodoGroup";
 import { AccountDetails, Credentials } from "../util/types";
 
 export type BackendTodo = {
-  created: string;
+  created: Date;
   text: string;
   id: number;
-  done: null | string;
+  done: null | Date;
   parent_group_name: string;
 };
 export type BackendTodoGroup = {
-  created: string;
+  created: Date;
   name: string;
   parent_id: string;
 };
@@ -29,6 +36,61 @@ export abstract class BackendInterface {
 
   /** Loads the data and populates the fields loadedTodos and loadedGroups. */
   abstract loadUserData(): Promise<void>;
+
+  convertAndInit() {
+    if (this.loadedTodos === null || this.loadedGroups === null) {
+      console.log("Fuck");
+      return;
+    }
+    // Mapping from group names to groups
+    const groupMap: { [key: string]: TodoGroup } = {};
+
+    const retTree: TodoTree = {};
+
+    // Initialize groups without children or parents
+    this.loadedGroups.forEach((el) => {
+      const id = getNewId();
+      const convertedGroup: TodoGroup = {
+        createdAt: el.created,
+        name: el.name,
+        type: "group",
+        id,
+        childrenIds: [],
+        parentId: null,
+      };
+      groupMap[el.name] = convertedGroup;
+      retTree[id] = convertedGroup;
+    });
+
+    // Convert todo items and populate group children list
+    this.loadedTodos.forEach((el) => {
+      const parGroup = groupMap[el.parent_group_name];
+      const id = getNewId();
+      parGroup.childrenIds.push(id);
+      const child: Todo = {
+        parentId: parGroup.id,
+        id,
+        type: "todo",
+        text: el.text,
+        createdAt: el.created,
+        done: el.done,
+      };
+      retTree[id] = child;
+    });
+
+    // Populate parent id / children relationship for groups
+    this.loadedGroups.forEach((el) => {
+      if (el.parent_id) {
+        const parGroup = groupMap[el.parent_id];
+        const self = groupMap[el.name];
+        self.parentId = parGroup.id;
+        parGroup.childrenIds.push(self.id);
+      }
+    });
+
+    const root = groupMap["root"];
+    globalTodoHandler.init(retTree, root);
+  }
 
   /** Creates a user account.
    *

@@ -24,6 +24,10 @@ export interface TodoGroup extends TodoBase {
 
 export type GeneralTodo = TodoGroup | Todo;
 
+export const getNewId = () => {
+  return uuidv4();
+};
+
 const isGroup = (gt: GeneralTodo): gt is TodoGroup => {
   return gt.type === "group";
 };
@@ -89,7 +93,12 @@ export class TodoHandler {
   }
 
   generateNewId() {
-    return uuidv4();
+    return getNewId();
+  }
+
+  init(todoTree: TodoTree, root: TodoGroup) {
+    this.todoTree = todoTree;
+    this.subTreeRoot = { groupList: [], todo: root };
   }
 
   addGroup(name: string, parentGroupId: string | null = null) {
