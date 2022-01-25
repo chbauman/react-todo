@@ -43,6 +43,9 @@ export abstract class BackendInterface {
   abstract getUser(): string | null;
   abstract logout(): void;
 
+  /** Saves the current data to the backend. */
+  abstract save(): Promise<boolean>;
+
   /** Loads the data and populates the fields loadedTodos and loadedGroups. */
   abstract loadUserData(): Promise<void>;
 

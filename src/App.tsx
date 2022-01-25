@@ -110,6 +110,7 @@ const getNav = (
             {currName}
           </Nav.Link>
         </Nav>
+        <Button onClick={() => djangoInterface.save()}>Save</Button>
         <Nav>User: {userName}</Nav>
         <Button onClick={logout}>Logout</Button>
       </Navbar.Collapse>

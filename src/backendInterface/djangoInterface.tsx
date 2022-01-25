@@ -69,17 +69,49 @@ class DjangoInterface extends BackendInterface {
   }
 
   private async get(url: string) {
+    return fetch(url, {
+      method: "GET",
+      headers: this.getAuthHeader(),
+    });
+  }
+
+  private async post(url: string, data: any) {
+    return fetch(url, {
+      method: "POST",
+      headers: this.getAuthHeader(),
+      body: JSON.stringify(data),
+    });
+  }
+
+  private getAuthHeader() {
     if (this.userData === null) {
       throw new Error("Not logged in!");
     }
-    const authorizedHeader = {
+    return {
       ...contTypeHeader,
       Authorization: `Token ${this.userData?.token}`,
     };
-    return fetch(url, {
-      method: "GET",
-      headers: authorizedHeader,
-    });
+  }
+
+  async save() {
+    this.prepareSaving();
+    if (this.loadedGroups === null || this.loadedTodos === null) {
+      return false;
+    }
+    const url = `${baseUrl}todo_groups/`;
+    const resp = await this.post(url, this.loadedGroups);
+    const groupsUploaded = resp.ok;
+    if (!groupsUploaded) {
+      console.log(resp, this.loadedGroups);
+    }
+
+    const urlItems = `${baseUrl}todo_items/`;
+    const respItems = await this.post(urlItems, this.loadedTodos);
+    const itemsUploaded = respItems.ok;
+    if (!itemsUploaded) {
+      console.log(resp, this.loadedTodos);
+    }
+    return groupsUploaded && itemsUploaded;
   }
 
   async createAccountAndLogin(accoundData: AccountDetails) {
