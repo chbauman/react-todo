@@ -32,7 +32,7 @@ export const getNewId = () => {
   return uuidv4();
 };
 
-const isGroup = (gt: GeneralTodo): gt is TodoGroup => {
+export const isGroup = (gt: GeneralTodo): gt is TodoGroup => {
   return gt.type === "group";
 };
 
@@ -167,6 +167,23 @@ export class TodoHandler {
     // Do the actual delete
     delete this.todoTree[id];
     this.changeHappened();
+  }
+
+  getGroupList() {
+    const groups: TodoGroup[] = [this.root];
+    const currGroup = this.root;
+    this.getGroupListHelper(groups, currGroup);
+    return groups;
+  }
+
+  private getGroupListHelper(groups: TodoGroup[], currGroup: TodoGroup) {
+    for (const childId of currGroup.childrenIds) {
+      const todo = this.todoTree[childId];
+      if (isGroup(todo)) {
+        groups.push(todo);
+        this.getGroupListHelper(groups, todo);
+      }
+    }
   }
 
   getTodoList() {
