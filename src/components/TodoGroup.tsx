@@ -218,19 +218,3 @@ export class TodoHandler {
 }
 
 export const globalTodoHandler = new TodoHandler();
-
-// Add some test data
-globalTodoHandler.addTodo("Todo on base level.");
-globalTodoHandler.addTodo("Another test todo.");
-let testGroupId = globalTodoHandler.addGroup("Test Group");
-globalTodoHandler.addTodo("Sample todo in group.", testGroupId);
-globalTodoHandler.addTodo("Another todo.", testGroupId);
-
-console.log("Setting useless data");
-testGroupId = globalTodoHandler.addGroup("Test Group 2", testGroupId);
-globalTodoHandler.addTodo("A todo from the second group.", testGroupId);
-globalTodoHandler.addTodo("Another deeply nested todo.", testGroupId);
-globalTodoHandler.addTodo(
-  "Another deeply nested todo. This one contains a lot of text such that it needs to be wrapped!",
-  testGroupId
-);
