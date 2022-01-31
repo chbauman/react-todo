@@ -66,7 +66,7 @@ export class TodoHandler {
         parentId: null,
         id: rootId,
         childrenIds: [],
-        createdAt: null,
+        createdAt: new Date(),
       };
       this.todoTree = {};
       this.todoTree[rootId] = rootGroup;
