@@ -155,3 +155,4 @@ class DjangoInterface extends BackendInterface {
 }
 
 export const djangoInterface: BackendInterface = new DjangoInterface();
+(window as any).djangoInterface = djangoInterface;

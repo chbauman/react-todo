@@ -45,28 +45,38 @@ type TodoListifiedTree = {
 };
 
 export class TodoHandler {
-  todoTree: TodoTree;
-  root: TodoGroup;
-  subTreeRoot: TodoGroupAndGroups;
+  todoTree!: TodoTree;
+  root!: TodoGroup;
+  subTreeRoot!: TodoGroupAndGroups;
 
   onChangedCbDict: { [key: string]: VoidFunction } = {};
   initialized = false;
 
   constructor() {
     // Generate root todo group.
-    const rootId = this.generateNewId();
-    const rootGroup: TodoGroup = {
-      name: "root",
-      type: "group",
-      parentId: null,
-      id: rootId,
-      childrenIds: [],
-      createdAt: null,
-    };
-    this.todoTree = {};
-    this.todoTree[rootId] = rootGroup;
-    this.root = rootGroup;
-    this.subTreeRoot = { groupList: [], todo: rootGroup };
+    this.init({});
+  }
+
+  init(todoTree: TodoTree, root?: TodoGroup) {
+    if (root === undefined) {
+      const rootId = this.generateNewId();
+      const rootGroup: TodoGroup = {
+        name: "root",
+        type: "group",
+        parentId: null,
+        id: rootId,
+        childrenIds: [],
+        createdAt: null,
+      };
+      this.todoTree = {};
+      this.todoTree[rootId] = rootGroup;
+      this.root = rootGroup;
+      this.subTreeRoot = { groupList: [], todo: rootGroup };
+    } else {
+      this.todoTree = todoTree;
+      this.subTreeRoot = { groupList: [], todo: root };
+      this.root = root;
+    }
   }
 
   setGroupAsSelected(newGroup: TodoGroupAndGroups) {
@@ -99,11 +109,6 @@ export class TodoHandler {
 
   generateNewId() {
     return getNewId();
-  }
-
-  init(todoTree: TodoTree, root: TodoGroup) {
-    this.todoTree = todoTree;
-    this.subTreeRoot = { groupList: [], todo: root };
   }
 
   addGroup(name: string, parentGroupId: string | null = null) {
