@@ -1,7 +1,7 @@
 import { AccountDetails, Credentials } from "../util/types";
 import { BackendInterface } from "./baseInterface";
 
-const DEBUG = process.env.DEBUG;
+const DEBUG = process.env.REACT_APP_DEBUG;
 
 /** Backend url. */
 const baseUrl = DEBUG
@@ -111,19 +111,20 @@ class DjangoInterface extends BackendInterface {
     const resp = await this.post(url, this.loadedGroups);
     const groupsUploaded = resp.ok;
     if (!groupsUploaded) {
-      const respJson = await resp.json();
-      console.log("fuck", resp, this.loadedGroups, respJson);
+      const respJson = await resp.json().catch((e: any) => console.log(e));
+      console.log("Posting groups failed:", this.loadedGroups, respJson);
     }
 
     const urlItems = `${baseUrl}todo_items/`;
     const respItems = await this.post(urlItems, this.loadedTodos);
     const itemsUploaded = respItems.ok;
     if (!itemsUploaded) {
-      console.log(resp, this.loadedTodos);
+      const respJson = await respItems.json().catch((e: any) => console.log(e));
+      console.log("Posting todos failed:", this.loadedTodos, respJson);
     }
     const saveSuccessful = groupsUploaded && itemsUploaded;
-    if (!saveSuccessful) {
-      console.log("Fuck");
+    if (saveSuccessful) {
+      console.log("Successfully saved!");
     }
     return saveSuccessful;
   }

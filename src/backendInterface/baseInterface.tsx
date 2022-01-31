@@ -79,6 +79,9 @@ export abstract class BackendInterface {
     // Convert todo items and populate group children list
     this.loadedTodos.forEach((el) => {
       const parGroup = groupMap[el.parent_group_name];
+      if (parGroup === undefined) {
+        console.log("Invalid tree, orphan", el);
+      }
       const id = getNewId();
       parGroup.childrenIds.push(id);
       const child: Todo = {
