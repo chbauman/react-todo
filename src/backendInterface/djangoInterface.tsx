@@ -1,12 +1,13 @@
 import { AccountDetails, Credentials } from "../util/types";
 import { BackendInterface } from "./baseInterface";
 
-const DEBUG = true;
+const DEBUG = process.env.DEBUG;
 
 /** Backend url. */
 const baseUrl = DEBUG
   ? "http://127.0.0.1:8000/"
   : "https://chbauman.pythonanywhere.com/";
+console.log("Debug: ", DEBUG, baseUrl);
 
 const contTypeHeader = {
   "Content-Type": "application/json",
