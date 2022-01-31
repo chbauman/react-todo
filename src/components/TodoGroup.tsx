@@ -50,6 +50,7 @@ export class TodoHandler {
   subTreeRoot: TodoGroupAndGroups;
 
   onChangedCbDict: { [key: string]: VoidFunction } = {};
+  initialized = false;
 
   constructor() {
     // Generate root todo group.
@@ -220,6 +221,7 @@ let testGroupId = globalTodoHandler.addGroup("Test Group");
 globalTodoHandler.addTodo("Sample todo in group.", testGroupId);
 globalTodoHandler.addTodo("Another todo.", testGroupId);
 
+console.log("Setting useless data");
 testGroupId = globalTodoHandler.addGroup("Test Group 2", testGroupId);
 globalTodoHandler.addTodo("A todo from the second group.", testGroupId);
 globalTodoHandler.addTodo("Another deeply nested todo.", testGroupId);

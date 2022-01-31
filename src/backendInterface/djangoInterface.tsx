@@ -60,9 +60,17 @@ class DjangoInterface extends BackendInterface {
     const todosUrl = `${baseUrl}todo_items/`;
     const todos = await this.get(todosUrl);
     const todoJson = await todos.json();
+    if (!todos.ok) {
+      console.log("Failed to fetch todos", todoJson);
+      return;
+    }
     const todoGroupsUrl = `${baseUrl}todo_groups/`;
     const todoGroups = await this.get(todoGroupsUrl);
     const todoGroupsJson = await todoGroups.json();
+    if (!todos.ok) {
+      console.log("Failed to fetch groups", todoGroupsJson);
+      return;
+    }
     this.loadedTodos = todoJson;
     this.loadedGroups = todoGroupsJson;
     this.convertAndInit();
@@ -102,7 +110,8 @@ class DjangoInterface extends BackendInterface {
     const resp = await this.post(url, this.loadedGroups);
     const groupsUploaded = resp.ok;
     if (!groupsUploaded) {
-      console.log(resp, this.loadedGroups);
+      const respJson = await resp.json();
+      console.log("fuck", resp, this.loadedGroups, respJson);
     }
 
     const urlItems = `${baseUrl}todo_items/`;
@@ -111,7 +120,11 @@ class DjangoInterface extends BackendInterface {
     if (!itemsUploaded) {
       console.log(resp, this.loadedTodos);
     }
-    return groupsUploaded && itemsUploaded;
+    const saveSuccessful = groupsUploaded && itemsUploaded;
+    if (!saveSuccessful) {
+      console.log("Fuck");
+    }
+    return saveSuccessful;
   }
 
   async createAccountAndLogin(accoundData: AccountDetails) {

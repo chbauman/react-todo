@@ -108,8 +108,6 @@ export abstract class BackendInterface {
 
   /** Converts to backend objects. */
   prepareSaving() {
-    console.log("Not implemented!");
-
     const tt = globalTodoHandler.todoTree;
 
     const groups = globalTodoHandler.getAllGroups();

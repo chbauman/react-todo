@@ -17,7 +17,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "relocate": "react-scripts build && rm -rf ../todo-backend-django/build && mv -f build ../todo-backend-django"
   },
   "eslintConfig": {
     "extends": [

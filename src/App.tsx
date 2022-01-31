@@ -8,12 +8,39 @@ import PendingTodos from "./components/PendingTodos";
 import { RegisterPage } from "./components/Register";
 import { globalTodoHandler, TodoGroupAndGroups } from "./components/TodoGroup";
 import { Credentials } from "./util/types";
+import { delayAtLeast } from "./util/util";
+
+type AppState = "initialized" | "login" | "load-data" | "create-account";
+type AppStateData = {
+  state: AppState;
+  userName: string | null;
+};
 
 /** The main app. */
 const FullApp = () => {
   const initUser = djangoInterface.getUser();
-  const [isLoggedIn, setLoggedIn] = useState<string | null>(initUser);
-  const [creatingAccount, setCreatingAccount] = useState<boolean>(false);
+
+  let initState: AppState = "initialized";
+  if (initUser === null) {
+    initState = "login";
+  } else if (!globalTodoHandler.initialized) {
+    initState = "load-data";
+  }
+  const [stateAndUsername, setState] = useState<AppStateData>({
+    state: initState,
+    userName: initUser,
+  });
+  const setLoggedIn = (userName: string | null) =>
+    setState({ state: "initialized", userName: userName });
+  const optionalUserName = stateAndUsername.userName;
+  const setCreatingAccount = () => {
+    const nextState: AppStateData = {
+      state: "create-account",
+      userName: null,
+    };
+    setState(nextState);
+  };
+  const creatingAccount = stateAndUsername.state === "create-account";
 
   // Return create account component
   if (creatingAccount) {
@@ -25,25 +52,40 @@ const FullApp = () => {
     );
   }
 
-  // Return app component if user is logged in
-  if (isLoggedIn !== null) {
-    const logout = () => {
-      djangoInterface.logout();
-      setLoggedIn(null);
+  // Return login component if user is not logged in
+  if (optionalUserName === null) {
+    const login = async (credentials: Credentials) => {
+      const loginSuccessful = await djangoInterface.loginUser(credentials);
+      if (loginSuccessful) {
+        setLoggedIn(credentials.username);
+      }
     };
-    return <App userName={isLoggedIn} logout={logout}></App>;
+    return (
+      <Login setLogin={login} setCreatingAccount={setCreatingAccount}></Login>
+    );
   }
 
-  // Return login component
-  const login = async (credentials: Credentials) => {
-    const loginSuccessful = await djangoInterface.loginUser(credentials);
-    if (loginSuccessful) {
-      setLoggedIn(credentials.username);
-    }
+  // Load data from server if todo handler is not initialized
+  if (!globalTodoHandler.initialized) {
+    const loadUserData = async () => {
+      await delayAtLeast(() => djangoInterface.loadUserData(), 400);
+      globalTodoHandler.initialized = true;
+      setState({ ...stateAndUsername, state: "initialized" });
+    };
+    loadUserData();
+    return (
+      <Container>
+        <h2>Loading...</h2>
+      </Container>
+    );
+  }
+
+  // Return app component if user is logged in
+  const logout = () => {
+    djangoInterface.logout();
+    setLoggedIn(null);
   };
-  return (
-    <Login setLogin={login} setCreatingAccount={setCreatingAccount}></Login>
-  );
+  return <App userName={optionalUserName} logout={logout}></App>;
 };
 
 const App = ({
