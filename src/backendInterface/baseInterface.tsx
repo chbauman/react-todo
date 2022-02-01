@@ -27,7 +27,7 @@ export type BackendTodo = {
 export type BackendTodoGroup = {
   created: Date | null;
   name: string;
-  parent_id: string | null;
+  parent_name: string | null;
 };
 
 export abstract class BackendInterface {
@@ -97,8 +97,8 @@ export abstract class BackendInterface {
 
     // Populate parent id / children relationship for groups
     this.loadedGroups.forEach((el) => {
-      if (el.parent_id) {
-        const parGroup = groupMap[el.parent_id];
+      if (el.parent_name) {
+        const parGroup = groupMap[el.parent_name];
         const self = groupMap[el.name];
         self.parentId = parGroup.id;
         parGroup.childrenIds.push(self.id);
@@ -123,7 +123,7 @@ export abstract class BackendInterface {
       return {
         created: el.createdAt,
         name: el.name,
-        parent_id: parentName,
+        parent_name: parentName,
       };
     });
 
