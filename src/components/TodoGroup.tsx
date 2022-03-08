@@ -107,6 +107,22 @@ export class TodoHandler {
     this.changeHappened();
   }
 
+  changeItemGroup(id: string, newGroupId: string | null) {
+    const todo = this.todoTree[id];
+
+    // Fix parent child relation
+    const prevGroup = this.getParent(todo.parentId);
+    prevGroup.childrenIds = prevGroup.childrenIds.filter(
+      (childId) => id !== childId
+    );
+
+    const newParent = this.getParent(newGroupId);
+    newParent.childrenIds.push(id);
+
+    todo.parentId = newGroupId;
+    this.changeHappened();
+  }
+
   generateNewId() {
     return getNewId();
   }

@@ -1,4 +1,4 @@
-import { Button, ButtonGroup, Col, Row } from "react-bootstrap";
+import { Button, ButtonGroup, Col, Dropdown, Row } from "react-bootstrap";
 import {
   globalTodoHandler,
   Todo,
@@ -6,6 +6,8 @@ import {
   TodoGroupAndGroups,
 } from "./TodoGroup";
 import "./todo.css";
+import { GroupSelect } from "./GroupSelect";
+import { StayOpenDropdown } from "../util/util";
 
 export const noSpaceStyle = { margin: 0, padding: 0 };
 
@@ -75,16 +77,42 @@ export function TodoComponent(props: {
       Done
     </Button>
   );
+  const deleteCallback = () => {
+    globalTodoHandler.deleteTodo(props.todo.id);
+  };
+  const changeGroupCb = (newGroupId: string | null) => {
+    if (newGroupId) {
+      globalTodoHandler.changeItemGroup(props.todo.id, newGroupId);
+    } else {
+      console.log("no new group");
+    }
+  };
+  const changeContentCallback = () => {
+    console.log("Not implemented!");
+  };
+  const ddItems = (
+    <>
+      <Dropdown.Item>
+        Change Group{" "}
+        <GroupSelect onChangeCB={changeGroupCb} id="change-group"></GroupSelect>
+      </Dropdown.Item>
+      <Dropdown.Item onClick={changeContentCallback}>
+        Edit Content
+      </Dropdown.Item>
+      <Dropdown.Item onClick={deleteCallback}>Delete</Dropdown.Item>
+    </>
+  );
+
+  const stayOpenDD = (
+    <StayOpenDropdown title="Edit" size="sm">
+      {ddItems}
+    </StayOpenDropdown>
+  );
+
   const buttGroup = (
     <ButtonGroup>
       {doneButt}
-      <Button
-        size="sm"
-        variant="danger"
-        onClick={() => globalTodoHandler.deleteTodo(props.todo.id)}
-      >
-        Delete
-      </Button>
+      {stayOpenDD}
     </ButtonGroup>
   );
 

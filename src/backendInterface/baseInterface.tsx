@@ -58,8 +58,8 @@ export abstract class BackendInterface {
     }
     // Mapping from group names to groups
     const groupMap: { [key: string]: TodoGroup } = {};
-
     const retTree: TodoTree = {};
+    console.log("Items:", this.loadedTodos);
 
     // Initialize groups without children or parents
     this.loadedGroups.forEach((el) => {

@@ -1,9 +1,9 @@
-import { useRef, useState } from "react";
-import Select from "react-select";
+import { useRef } from "react";
 import { Button, Col, Form, Row } from "react-bootstrap";
 import CompHeader from "./CompHeader";
 import { globalTodoHandler } from "./TodoGroup";
 import { useRegisteredRerender } from "../hooks/registerRerender";
+import { GroupSelect } from "./GroupSelect";
 
 /** Component for adding a new group. */
 export function NewGroup() {
@@ -62,31 +62,5 @@ const useNewTodoComp = (
         </Form.Group>
       </Row>
     </>
-  );
-};
-
-type GroupSelectOption = { value: string; label: string };
-
-export const GroupSelect = ({ onChangeCB }: { onChangeCB: any }) => {
-  const datalist = globalTodoHandler.getAllGroups();
-  const options = datalist.map((el) => {
-    return { value: el.id, label: el.name };
-  });
-
-  useRegisteredRerender("groups-selection");
-
-  const [selectedOption, setSelectedOption] =
-    useState<GroupSelectOption | null>(null);
-  const onChange = (el: GroupSelectOption | null) => {
-    setSelectedOption(el);
-    onChangeCB(el?.value);
-  };
-
-  return (
-    <Select
-      defaultValue={selectedOption}
-      onChange={onChange}
-      options={options}
-    />
   );
 };
