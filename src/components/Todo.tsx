@@ -92,9 +92,14 @@ export function TodoComponent(props: {
   };
   const ddItems = (
     <>
-      <Dropdown.Item>
-        Change Group{" "}
-        <GroupSelect onChangeCB={changeGroupCb} id="change-group"></GroupSelect>
+      <Dropdown.Item className="d-flex flex-row">
+        <div id="change-group-label">Change Group</div>
+        <div className="ms-2" style={{ minWidth: 100 }}>
+          <GroupSelect
+            onChangeCB={changeGroupCb}
+            id="change-group"
+          ></GroupSelect>
+        </div>
       </Dropdown.Item>
       <Dropdown.Item onClick={changeContentCallback}>
         Edit Content

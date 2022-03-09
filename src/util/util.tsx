@@ -34,16 +34,18 @@ export const StayOpenDropdown = ({ children, ...rest }: any) => {
     const elIsSVG = isSVG(target);
     const firstChildIsSVG = isSVG(target.firstChild);
     const str = target.firstChild.id;
-    if (elIsSVG || firstChildIsSVG || (str && str.startsWith("react-select"))) {
-      console.log("not closing");
+    const isLabel = target.id && target.id === "change-group-label";
+    const isSelect = str && str.startsWith("react-select");
+    if (elIsSVG || firstChildIsSVG || isLabel || isSelect) {
       return;
     }
+
     const isShown = isOpen;
     setShow(isShown);
   };
 
   return (
-    <DropdownButton show={show} onToggle={onToggle} {...rest}>
+    <DropdownButton align="end" show={show} onToggle={onToggle} {...rest}>
       {children}
     </DropdownButton>
   );
